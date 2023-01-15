@@ -26,40 +26,30 @@
 
                 <label class="label-app" for="pontos-fim">ORDENACAO</label>
                 <div class="area-ordenacao">
-                    <button id="ordem-chegada">CHEGADA</button>
-                    <button id="ordem-aleatoria">ALEATORIA</button>
+                    <button onclick="addJogadoresChegadaToHTML()" id="ordem-chegada">CHEGADA</button>
+                    <button onclick="shuffleJogadores()" id="ordem-aleatoria">ALEATORIA</button>
                 </div>
-               
-                <div class="area-pre-reservas">
-                    <label class="label-app" for="pontos-fim">RESERVAS</label>
-                    <div class="lista-pre-reservas">
-                        <div class="item-pre-reserva">
-                            <span>Felipe</span> 
-                        </div>
-                    </div>
-                </div>
-                
+
                 <div class="area-pre-times">
                     <div class="pre-time-1">
                         <label class="label-app">TIME 1</label>
                         <div class="lista-pre-jogadores">
-                            <div class="pre-jogador-item">Felipe</div>
-                            <div class="pre-jogador-item">Joao</div>
-                            <div class="pre-jogador-item">Sergio</div>
-                            <div class="pre-jogador-item">BArroso</div>
+                            <!-- <div class="pre-jogador-item"></div> -->
                         </div>
                     </div>
                     <div class="pre-time-2">
                         <label class="label-app" for="pontos-fim">TIME 2</label>
                         <div class="lista-pre-jogadores">
-                            <div class="pre-jogador-item">Felipe</div>
-                            <div class="pre-jogador-item">Joao</div>
-                            <div class="pre-jogador-item">Sergio</div>
-                            <div class="pre-jogador-item">BArroso</div>
+                            <!-- <div class="pre-jogador-item"></div> -->
                         </div>
                     </div>
                 </div>
-
+               
+                <div class="area-pre-reservas">
+                    <label class="label-app" for="pontos-fim">RESERVAS</label>
+                    <div class="lista-pre-reservas">
+                    </div>
+                </div>
 
                 <a id="novo-jogo" class="btn-app" href="">
                     <img style="margin-right:10px" src="/ball.png" alt="">
@@ -70,9 +60,89 @@
     </div>
 
     <script>
+        const listaPreReservas = document.querySelector(".lista-pre-reservas");
 
+        // pega os jogadores armazenados no LocalStorage
+        const jogadoresStorage = JSON.parse(localStorage.getItem("jogadores"));
 
+        // se existir jogadores armazenados, adiciona-os na lista de pré-reservas no HTML
+        if (jogadoresStorage) {
+            jogadoresStorage.forEach(jogador => {
+                const itemPreReserva = document.createElement("div");
+                itemPreReserva.classList.add("item-pre-reserva");
+                const jogadorNome = document.createElement("span");
+                jogadorNome.innerText = jogador.nome;
+                itemPreReserva.appendChild(jogadorNome);
+                listaPreReservas.appendChild(itemPreReserva);
+            });
+        }
 
-    </script>
+        // Embaralha os jogadores e chama a funcao de add no HTML
+        function shuffleJogadores() {
+            // faz uma cópia do array de jogadoresStorage
+            const jogadoresAleatorios = jogadoresStorage.slice();
+            // usa o algoritmo de Fisher-Yates para embaralhar o array
+            for (let i = jogadoresAleatorios.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [jogadoresAleatorios[i], jogadoresAleatorios[j]] = [jogadoresAleatorios[j], jogadoresAleatorios[i]];
+            }
+
+            addJogadoresAleatoriosToHTML(jogadoresAleatorios);
+        }
+
+        // Embaralha os jogadores e adiciona no HTML
+        function addJogadoresAleatoriosToHTML(jogadoresAleatorios) {
+            // pega os elementos HTML dos times
+            const time1 = document.querySelector(".pre-time-1 .lista-pre-jogadores");
+            const time2 = document.querySelector(".pre-time-2 .lista-pre-jogadores");
+
+            // percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
+            for (let i = 0; i < 5; i++) {
+                const jogador = jogadoresAleatorios[i];
+                const preJogadorItem = document.createElement("div");
+                preJogadorItem.classList.add("pre-jogador-item");
+                preJogadorItem.innerText = jogador.nome;
+                time1.appendChild(preJogadorItem);
+            }
+
+            // percorre os próximos 5 jogadores e adiciona-os no HTML do time 2
+            for (let i = 5; i < 10; i++) {
+                const jogador = jogadoresAleatorios[i];
+                const preJogadorItem = document.createElement("div");
+                preJogadorItem.classList.add("pre-jogador-item");
+                preJogadorItem.innerText = jogador.nome;
+                time2.appendChild(preJogadorItem);
+            }
+            }
+   
+        // Adiciona os jogadores na ordem de chegada
+        function addJogadoresChegadaToHTML() {
+            // pega os jogadores armazenados no LocalStorage
+            const jogadoresStorage = JSON.parse(localStorage.getItem("jogadores"));
+
+            // pega os elementos HTML dos times
+            const time1 = document.querySelector(".pre-time-1 .lista-pre-jogadores");
+            const time2 = document.querySelector(".pre-time-2 .lista-pre-jogadores");
+
+            // percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
+            for (let i = 0; i < 5; i++) {
+                const jogador = jogadoresStorage[i];
+                const preJogadorItem = document.createElement("div");
+                preJogadorItem.classList.add("pre-jogador-item");
+                preJogadorItem.innerText = jogador.nome;
+                time1.appendChild(preJogadorItem);
+            }
+
+            // percorre os próximos 5 jogadores e adiciona-os no HTML do time 2
+            for (let i = 5; i < 10; i++) {
+                const jogador = jogadoresStorage[i];
+                const preJogadorItem = document.createElement("div");
+                preJogadorItem.classList.add("pre-jogador-item");
+                preJogadorItem.innerText = jogador.nome;
+                time2.appendChild(preJogadorItem);
+            }
+        }
+
+   </script>
 </body>
 </html>
