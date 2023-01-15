@@ -33,7 +33,7 @@
                 <div class="lista-jogadores">
                     <!-- <div class="jogador-item">
                         <span></span>
-                        <div data-id="" id="remove-jogador">-</div>
+                        <div data-id="" class="remove">-</div>
                     </div> -->
                 </div>
 
@@ -43,17 +43,9 @@
         </div>
     </div>
 
-    <!-- <script src="scripts/import.js"></script> -->
+    <script src="classes/Jogador.js"></script>
 
     <script>
-
-        class Jogador {
-            constructor(id, nome) {
-                this.id = id;
-                this.nome = nome;
-                this.gols = 0;
-            }
-        }
 
         let nextId = localStorage.getItem('nextId');
         

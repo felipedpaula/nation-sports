@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pantera Sports</title>
+    <link rel="stylesheet" href="estilos/styles.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="center">
+        <div class="topo-app card">
+            <img width="60" height="60" src="logo-original.png" alt="">
+            <h1>Pantera Sports</h1>
+        </div>
+
+        <div class="corpo card">
+           <div class="area-jogo">
+               <div class="topo-jogo">
+                    <div class="status-jogo">
+                        <label class="label-app">| Status JOGO:</label>
+                        <div class="sinal em-andamento">
+                            Jogo em andamento
+                        </div>
+                    </div>
+                    <div class="tempo-jogo">
+                        <label class="label-app">| TEMPO:</label>
+                        <div class="timer-jogo">
+                            <div class="controles-jogo">
+                                <div class="btn-controll play">
+                                    <img width="25px" src="play.png" alt="Play">
+                                </div>
+                                <div class="btn-controll pause">
+                                    <img width="25px" src="pause.png" alt="Pause">
+                                </div>
+                                <div class="btn-controll stop">
+                                    <img width="25px" src="stop.png" alt="Stop">
+                                </div>
+                            </div>
+                            <div class="cronometro">
+                                7:00
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="topo-times">
+                    <div class="topo-time-1">
+                        <label class="label-app" style="text-align: center;">TIME 1</label>
+                        <div class="gols-time-1">
+                            <div class="add" id="add-gol-1">+</div>
+                            <span class="gols-1">0</span>
+                            <div class="remove" id="remove-gol-1">-</div>
+                        </div>
+                        <div class="lista-jogadores-time-1">
+                            <div class="jogador-time-1">Felipe</div>
+                            <div class="jogador-time-1">Joao</div>
+                            <div class="jogador-time-1">Jean</div>
+                            <div class="jogador-time-1">JEronimo</div>
+                            <div class="jogador-time-1">Carlos</div>
+                        </div>
+                    </div>
+                    <span class="versus">X</span>
+                    <div class="topo-time-2">
+                        <label class="label-app" style="text-align: center;">TIME 2</label>
+                        <div class="gols-time-2">
+                            <div class="add" id="add-gol-2">+</div>
+                            <span class="gols-1">0</span>
+                            <div class="remove" id="remove-gol-2">-</div>
+                        </div>
+                        <div class="lista-jogadores-time-2">
+                            <div class="jogador-time-2">Felipe</div>
+                            <div class="jogador-time-2">Joao</div>
+                            <div class="jogador-time-2">Jean</div>
+                            <div class="jogador-time-2">JEronimo</div>
+                            <div class="jogador-time-2">Carlos</div>
+                        </div>
+                    </div>
+                </div>
+
+                <button onclick="proximaPartida()" class="btn-app ">
+                    PRÓXIMA PARTIDA
+                </button>
+
+                <hr>
+                
+                <label class="label-app">| Proximo time</label>
+                <div class="proximo-time-area">
+                    <div class="proximo-time">
+                        <div class="proximo-time-jogador">Felipe</div>
+                        <div class="proximo-time-jogador">Felipe</div>
+                        <div class="proximo-time-jogador">Felipe</div>
+                        <div class="proximo-time-jogador">Felipe</div>
+                        <div class="proximo-time-jogador">Felipe</div>
+                    </div>
+                </div>
+
+                <button onclick="visaoJogo()" class="btn-app ">
+                    VISAO DE JOGO
+                </button>
+
+           </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -51,13 +51,15 @@
                     </div>
                 </div>
 
-                <button onclick="getTeams()" id="novo-jogo" class="btn-app">
+                <button onclick="start()" id="novo-jogo" class="btn-app">
                     <img style="margin-right:10px" src="/ball.png" alt="">
                     Iniciar jogo
                 </button>
            </div>
         </div>
     </div>
+
+    <script src="classes/Jogador.js"></script>
 
     <script>
         const listaPreReservas = document.querySelector(".lista-pre-reservas");
@@ -155,30 +157,35 @@
             }
         }
 
-        function getTeams() {
-            // Cria os arrays vazios para armazenar os jogadores
+        function start() {
+            // pega os elementos HTML dos times
+            const time1Elements = document.querySelector(".pre-time-1 .lista-pre-jogadores");
+            const time2Elements = document.querySelector(".pre-time-2 .lista-pre-jogadores");
+
+            // cria arrays vazios para guardar os jogadores
             const time1 = [];
             const time2 = [];
 
-            // Pega os elementos HTML dos times
-            const time1Elements = document.querySelector(".pre-time-1 .lista-pre-jogadores").children;
-            const time2Elements = document.querySelector(".pre-time-2 .lista-pre-jogadores").children;
-
-            // Percorre os elementos do time 1 e adiciona os nomes dos jogadores no array time1
-            for (let i = 0; i < time1Elements.length; i++) {
-                time1.push(time1Elements[i].textContent);
+            // percorre os elementos filhos de cada time e adiciona os jogadores nos arrays
+            for (let i = 0; i < time1Elements.childElementCount; i++) {
+                const jogadorItem = time1Elements.children[i];
+                const jogador = new Jogador(jogadorItem.dataset.id, jogadorItem.textContent);
+                time1.push(jogador);
+            }
+            for (let i = 0; i < time2Elements.childElementCount; i++) {
+                const jogadorItem = time2Elements.children[i];
+                const jogador = new Jogador(jogadorItem.dataset.id, jogadorItem.textContent);
+                time2.push(jogador);
             }
 
-            console.log(time1);
+            // guarda os times no LocalStorage
+            localStorage.setItem("time1", JSON.stringify(time1));
+            localStorage.setItem("time2", JSON.stringify(time2));
 
-            // Percorre os elementos do time 2 e adiciona os nomes dos jogadores no array time2
-            // for (let i = 0; i < time2Elements.length; i++) {
-            //     time2.push(time2Elements[i].textContent);
-            // }
-
-            // return { time1, time2 };
-           
+            window.location.href = '/play.html';
         }
+
+
    </script>
 </body>
 </html>

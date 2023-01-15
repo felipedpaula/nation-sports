@@ -1,4 +1,4 @@
-export default class Jogo {
+class Jogo {
     constructor(nome, tipo, jogadoresPorTime, tempoDeJogo, pontosParaAcabar) {
         this.nome = nome;
         this.tipo = tipo;
