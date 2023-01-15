@@ -34,27 +34,27 @@
                     <div class="pre-time-1">
                         <label class="label-app">TIME 1</label>
                         <div class="lista-pre-jogadores">
-                            <!-- <div class="pre-jogador-item"></div> -->
+                            <!-- <div data-id="" class="pre-jogador-item"></div> -->
                         </div>
                     </div>
                     <div class="pre-time-2">
                         <label class="label-app" for="pontos-fim">TIME 2</label>
                         <div class="lista-pre-jogadores">
-                            <!-- <div class="pre-jogador-item"></div> -->
+                            <!-- <div data-id="" class="pre-jogador-item"></div> -->
                         </div>
                     </div>
                 </div>
                
                 <div class="area-pre-reservas">
-                    <label class="label-app" for="pontos-fim">RESERVAS</label>
+                    <label class="label-app" for="pontos-fim">Jogadores</label>
                     <div class="lista-pre-reservas">
                     </div>
                 </div>
 
-                <a id="novo-jogo" class="btn-app" href="">
+                <button onclick="getTeams()" id="novo-jogo" class="btn-app">
                     <img style="margin-right:10px" src="/ball.png" alt="">
                     Iniciar jogo
-                </a>
+                </button>
            </div>
         </div>
     </div>
@@ -96,12 +96,17 @@
             const time1 = document.querySelector(".pre-time-1 .lista-pre-jogadores");
             const time2 = document.querySelector(".pre-time-2 .lista-pre-jogadores");
 
+            // remove os elementos filhos
+            time1.innerHTML = '';
+            time2.innerHTML = '';
+
             // percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
             for (let i = 0; i < 5; i++) {
                 const jogador = jogadoresAleatorios[i];
                 const preJogadorItem = document.createElement("div");
                 preJogadorItem.classList.add("pre-jogador-item");
                 preJogadorItem.innerText = jogador.nome;
+                preJogadorItem.setAttribute('data-id', jogador.id);
                 time1.appendChild(preJogadorItem);
             }
 
@@ -111,9 +116,10 @@
                 const preJogadorItem = document.createElement("div");
                 preJogadorItem.classList.add("pre-jogador-item");
                 preJogadorItem.innerText = jogador.nome;
+                preJogadorItem.setAttribute('data-id', jogador.id);
                 time2.appendChild(preJogadorItem);
             }
-            }
+        }
    
         // Adiciona os jogadores na ordem de chegada
         function addJogadoresChegadaToHTML() {
@@ -124,12 +130,17 @@
             const time1 = document.querySelector(".pre-time-1 .lista-pre-jogadores");
             const time2 = document.querySelector(".pre-time-2 .lista-pre-jogadores");
 
+            // remove os elementos filhos
+            time1.innerHTML = '';
+            time2.innerHTML = '';
+            
             // percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
             for (let i = 0; i < 5; i++) {
                 const jogador = jogadoresStorage[i];
                 const preJogadorItem = document.createElement("div");
                 preJogadorItem.classList.add("pre-jogador-item");
                 preJogadorItem.innerText = jogador.nome;
+                preJogadorItem.setAttribute('data-id', jogador.id);
                 time1.appendChild(preJogadorItem);
             }
 
@@ -139,10 +150,35 @@
                 const preJogadorItem = document.createElement("div");
                 preJogadorItem.classList.add("pre-jogador-item");
                 preJogadorItem.innerText = jogador.nome;
+                preJogadorItem.setAttribute('data-id', jogador.id);
                 time2.appendChild(preJogadorItem);
             }
         }
 
+        function getTeams() {
+            // Cria os arrays vazios para armazenar os jogadores
+            const time1 = [];
+            const time2 = [];
+
+            // Pega os elementos HTML dos times
+            const time1Elements = document.querySelector(".pre-time-1 .lista-pre-jogadores").children;
+            const time2Elements = document.querySelector(".pre-time-2 .lista-pre-jogadores").children;
+
+            // Percorre os elementos do time 1 e adiciona os nomes dos jogadores no array time1
+            for (let i = 0; i < time1Elements.length; i++) {
+                time1.push(time1Elements[i].textContent);
+            }
+
+            console.log(time1);
+
+            // Percorre os elementos do time 2 e adiciona os nomes dos jogadores no array time2
+            // for (let i = 0; i < time2Elements.length; i++) {
+            //     time2.push(time2Elements[i].textContent);
+            // }
+
+            // return { time1, time2 };
+           
+        }
    </script>
 </body>
 </html>

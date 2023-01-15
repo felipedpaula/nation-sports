@@ -33,7 +33,7 @@
                 <div class="lista-jogadores">
                     <!-- <div class="jogador-item">
                         <span></span>
-                        <div id="remove-jogador">-</div>
+                        <div data-id="" id="remove-jogador">-</div>
                     </div> -->
                 </div>
 
@@ -83,6 +83,7 @@
                 jogadorItem.appendChild(jogadorNome);
                 const removeJogador = document.createElement("div");
                 removeJogador.setAttribute("class", "remove-jogador");
+                removeJogador.setAttribute("data-id", jogador.id);
                 removeJogador.innerText = "-";
                 jogadorItem.appendChild(removeJogador);
                 listaJogadores.appendChild(jogadorItem);
@@ -121,6 +122,7 @@
             jogadorItem.appendChild(jogadorNome);
             const removeJogador = document.createElement("div");
             removeJogador.setAttribute("class", "remove-jogador");
+            removeJogador.setAttribute("data-id", jogador.id);
             removeJogador.innerText = "-";
             jogadorItem.appendChild(removeJogador);
             listaJogadores.appendChild(jogadorItem);
@@ -132,20 +134,20 @@
         const removeJogadores = document.querySelectorAll(".remove-jogador");
         removeJogadores.forEach(removeBtn => {
             removeBtn.addEventListener("click", function() {
-                // pega o jogador-item correspondente
-                const jogadorItem = this.parentNode;
                 // pega o id do jogador
-                const id = jogadores.findIndex(jogador => jogador.nome === jogadorItem.firstChild.textContent);
+                const id = this.getAttribute('data-id');
+                // encontra o jogador no array
+                const index = jogadores.findIndex(jogador => jogador.id === id);
                 // remove o jogador do array
-                jogadores.splice(id, 1);
+                jogadores.splice(index, 1);
                 // remove o jogador do LocalStorage
                 localStorage.setItem("jogadores", JSON.stringify(jogadores));
+                // pega o jogador-item correspondente
+                const jogadorItem = this.parentNode;
                 // remove o jogador do HTML
                 jogadorItem.remove();
             });
         });
-
-
 
         
     </script>
