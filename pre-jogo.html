@@ -98,12 +98,16 @@
             const time1 = document.querySelector(".pre-time-1 .lista-pre-jogadores");
             const time2 = document.querySelector(".pre-time-2 .lista-pre-jogadores");
 
+            // pega a quantindade de jogadores por time
+            const dadosJogo = JSON.parse(localStorage.getItem('dadosJogo'));
+            const qtdPorTime = dadosJogo.jogadoresPorTime;
+
             // remove os elementos filhos
             time1.innerHTML = '';
             time2.innerHTML = '';
 
             // percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < qtdPorTime; i++) {
                 const jogador = jogadoresAleatorios[i];
                 const preJogadorItem = document.createElement("div");
                 preJogadorItem.classList.add("pre-jogador-item");
@@ -113,7 +117,7 @@
             }
 
             // percorre os próximos 5 jogadores e adiciona-os no HTML do time 2
-            for (let i = 5; i < 10; i++) {
+            for (let i = qtdPorTime; i < qtdPorTime*2; i++) {
                 const jogador = jogadoresAleatorios[i];
                 const preJogadorItem = document.createElement("div");
                 preJogadorItem.classList.add("pre-jogador-item");
@@ -132,12 +136,16 @@
             const time1 = document.querySelector(".pre-time-1 .lista-pre-jogadores");
             const time2 = document.querySelector(".pre-time-2 .lista-pre-jogadores");
 
+            // pega a quantindade de jogadores por time
+            const dadosJogo = JSON.parse(localStorage.getItem('dadosJogo'));
+            const qtdPorTime = dadosJogo.jogadoresPorTime;
+
             // remove os elementos filhos
             time1.innerHTML = '';
             time2.innerHTML = '';
             
             // percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
-            for (let i = 0; i < 5; i++) {
+            for (let i = 0; i < qtdPorTime; i++) {
                 const jogador = jogadoresStorage[i];
                 const preJogadorItem = document.createElement("div");
                 preJogadorItem.classList.add("pre-jogador-item");
@@ -147,7 +155,7 @@
             }
 
             // percorre os próximos 5 jogadores e adiciona-os no HTML do time 2
-            for (let i = 5; i < 10; i++) {
+            for (let i = qtdPorTime; i < qtdPorTime*2; i++) {
                 const jogador = jogadoresStorage[i];
                 const preJogadorItem = document.createElement("div");
                 preJogadorItem.classList.add("pre-jogador-item");
