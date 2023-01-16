@@ -23,8 +23,8 @@
                <div class="topo-jogo">
                     <div class="status-jogo">
                         <label class="label-app">| Status JOGO:</label>
-                        <div class="sinal em-andamento">
-                            Jogo em andamento
+                        <div class="sinal parado">
+                            Pausado
                         </div>
                     </div>
                     <div class="tempo-jogo">
@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div class="cronometro">
-                                7:00
+                                <span class="tempo-restante">7:00</span>
                             </div>
                         </div>
                     </div>
@@ -58,11 +58,7 @@
                             <div class="remove" id="remove-gol-1">-</div>
                         </div>
                         <div class="lista-jogadores-time-1">
-                            <div class="jogador-time-1">Felipe</div>
-                            <div class="jogador-time-1">Joao</div>
-                            <div class="jogador-time-1">Jean</div>
-                            <div class="jogador-time-1">JEronimo</div>
-                            <div class="jogador-time-1">Carlos</div>
+                            <!-- <div class="jogador-time-1"></div> -->
                         </div>
                     </div>
                     <span class="versus">X</span>
@@ -70,15 +66,11 @@
                         <label class="label-app" style="text-align: center;">TIME 2</label>
                         <div class="gols-time-2">
                             <div class="add" id="add-gol-2">+</div>
-                            <span class="gols-1">0</span>
+                            <span class="gols-2">0</span>
                             <div class="remove" id="remove-gol-2">-</div>
                         </div>
                         <div class="lista-jogadores-time-2">
-                            <div class="jogador-time-2">Felipe</div>
-                            <div class="jogador-time-2">Joao</div>
-                            <div class="jogador-time-2">Jean</div>
-                            <div class="jogador-time-2">JEronimo</div>
-                            <div class="jogador-time-2">Carlos</div>
+                            
                         </div>
                     </div>
                 </div>
@@ -92,20 +84,181 @@
                 <label class="label-app">| Proximo time</label>
                 <div class="proximo-time-area">
                     <div class="proximo-time">
-                        <div class="proximo-time-jogador">Felipe</div>
-                        <div class="proximo-time-jogador">Felipe</div>
-                        <div class="proximo-time-jogador">Felipe</div>
-                        <div class="proximo-time-jogador">Felipe</div>
-                        <div class="proximo-time-jogador">Felipe</div>
+                        <!-- <div class="proximo-time-jogador"></div> -->
                     </div>
                 </div>
 
-                <button onclick="visaoJogo()" class="btn-app ">
+                <!-- <button onclick="visaoJogo()" class="btn-app ">
                     VISAO DE JOGO
-                </button>
+                </button> -->
 
            </div>
         </div>
     </div>
+
+    <script>
+        window.onload = function() {
+            addJogadoresTime1ToHTML();
+            addJogadoresTime2ToHTML();
+            definirProxReservas();
+            controladorPontos();
+            handlerStatusGame();
+            // handlerTimerGame();
+        }
+
+        function addJogadoresTime1ToHTML() {
+            // pega os jogadores armazenados no LocalStorage
+            const time1Storage = JSON.parse(localStorage.getItem("time1"));
+
+            // pega o elemento HTML do time 1
+            const time1 = document.querySelector(".lista-jogadores-time-1");
+
+            // percorre os jogadores do time 1 e adiciona-os no HTML
+            for (let i = 0; i < time1Storage.length; i++) {
+                const jogador = time1Storage[i];
+                const jogadorTime1 = document.createElement("div");
+                jogadorTime1.classList.add("jogador-time-1");
+                jogadorTime1.innerText = jogador.nome;
+                jogadorTime1.setAttribute("data-id", jogador.id);
+                time1.appendChild(jogadorTime1);
+            }
+        }
+
+        function addJogadoresTime2ToHTML() {
+            // pega os jogadores armazenados no LocalStorage
+            const time2Storage = JSON.parse(localStorage.getItem("time2"));
+
+            // pega o elemento HTML do time 2
+            const time2 = document.querySelector(".lista-jogadores-time-2");
+
+            // percorre os jogadores do time 2 e adiciona-os no HTML
+            for (let i = 0; i < time2Storage.length; i++) {
+                const jogador = time2Storage[i];
+                const jogadorTime2 = document.createElement("div");
+                jogadorTime2.classList.add("jogador-time-2");
+                jogadorTime2.innerText = jogador.nome;
+                jogadorTime2.setAttribute("data-id", jogador.id);
+                time2.appendChild(jogadorTime2);
+            }
+        }
+
+        function definirProxReservas() {
+            const jogadores = JSON.parse(localStorage.getItem("jogadores"));
+            const time1 = JSON.parse(localStorage.getItem("time1"));
+            const time2 = JSON.parse(localStorage.getItem("time2"));
+
+            const jogadoresTime1Ids = time1.map(jogador => jogador.id);
+            const jogadoresTime2Ids = time2.map(jogador => jogador.id);
+
+            const proxReservas = jogadores.filter(jogador => !jogadoresTime1Ids.includes(jogador.id) && !jogadoresTime2Ids.includes(jogador.id));
+            const containerProxReservas = document.querySelector(".proximo-time");
+
+            for (let i = 0; i < proxReservas.length; i++) {
+                const jogador = proxReservas[i];
+                const jogadorProxReserva = document.createElement("div");
+                jogadorProxReserva.classList.add("proximo-time-jogador");
+                jogadorProxReserva.innerText = jogador.nome;
+                jogadorProxReserva.setAttribute("data-id", jogador.id);
+                containerProxReservas.appendChild(jogadorProxReserva);
+            }
+
+            localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+        }
+
+        function controladorPontos() {
+            const addGolBtn1 = document.querySelector("#add-gol-1");
+            const removeGolBtn1 = document.querySelector("#remove-gol-1");
+            const golsSpan1 = document.querySelector(".gols-1");
+
+            addGolBtn1.addEventListener("click", function() {
+                let gols = parseInt(golsSpan1.innerText);
+                gols++;
+                golsSpan1.innerText = gols;
+            });
+
+            removeGolBtn1.addEventListener("click", function() {
+                let gols = parseInt(golsSpan1.innerText);
+                if (gols > 0) {
+                    gols--;
+                    golsSpan1.innerText = gols;
+                }
+            });
+
+            const addGolBtn2 = document.querySelector("#add-gol-2");
+            const removeGolBtn2 = document.querySelector("#remove-gol-2");
+            const golsSpan2 = document.querySelector(".gols-2");
+
+            addGolBtn2.addEventListener("click", function() {
+                let gols = parseInt(golsSpan2.innerText);
+                gols++;
+                golsSpan2.innerText = gols;
+            });
+
+            removeGolBtn2.addEventListener("click", function() {
+                let gols = parseInt(golsSpan2.innerText);
+                if (gols > 0) {
+                    gols--;
+                    golsSpan2.innerText = gols;
+                }
+            });
+        }
+
+        function handlerStatusGame() {
+            const playBtn = document.querySelector(".play img");
+            const pauseBtn = document.querySelector(".pause img");
+            const stopBtn = document.querySelector(".stop img");
+            const sinal = document.querySelector(".sinal");
+
+            playBtn.addEventListener("click", playGame);
+            pauseBtn.addEventListener("click", pauseGame);
+            stopBtn.addEventListener("click", stopGame);
+
+            function playGame() {
+                sinal.classList.remove("parado");
+                iniciarCronometro();
+                sinal.classList.remove("fim-de-jogo");
+                sinal.classList.add("em-andamento");
+                sinal.innerText = "Em andamento";
+            }
+
+            function pauseGame() {
+                sinal.classList.remove("em-andamento");
+                sinal.classList.remove("fim-de-jogo");
+                sinal.classList.add("parado");
+                sinal.innerText = "Pausado";
+            }
+
+            function stopGame() {
+                sinal.classList.remove("em-andamento");
+                sinal.classList.remove("parado");
+                sinal.classList.add("fim-de-jogo");
+                sinal.innerText = "Fim de jogo";
+            }
+
+            let intervalId;
+            let tempoRestante = 7 * 60;
+
+            function iniciarCronometro() {
+                intervalId = setInterval(atualizarCronometro, 1000);
+            }
+            
+            function atualizarCronometro() {
+                tempoRestante--;
+                const minutos = Math.floor(tempoRestante / 60);
+                const segundos = tempoRestante % 60;
+                document.querySelector(".tempo-restante").innerText = `${minutos}:${segundos < 10 ? "0" + segundos : segundos}`;
+                if (tempoRestante === 0) {
+                    pararCronometro();
+                    alert("Fim de jogo!");
+                }
+            }
+            
+            function pararCronometro() {
+                clearInterval(intervalId);
+            }
+
+        }
+
+    </script>
 </body>
 </html>

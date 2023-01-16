@@ -29,6 +29,7 @@ body {
     margin-top: 10px;
     border: 1px solid #cccccc;
     border-radius: 12px;
+    overflow: hidden;
 }
 .topo-app h1 {
     color: #000;
