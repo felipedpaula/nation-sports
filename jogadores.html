@@ -91,7 +91,7 @@
             const nome = document.getElementById("nome-jogador").value;
 
             // instancia um objeto da classe Jogador
-            const jogador = new Jogador(nextId, nome);
+            const jogador = new Jogador(parseInt(nextId), nome);
 
             // insere o objeto no array jogadores[]
             jogadores.push(jogador);
@@ -130,7 +130,7 @@
                 // pega o id do jogador
                 const id = this.getAttribute('data-id');
                 // encontra o jogador no array
-                const index = jogadores.findIndex(jogador => jogador.id === id);
+                const index = jogadores.findIndex(jogador => jogador.id == id);
                 // remove o jogador do array
                 jogadores.splice(index, 1);
                 // remove o jogador do LocalStorage

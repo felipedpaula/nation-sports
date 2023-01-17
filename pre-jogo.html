@@ -193,9 +193,9 @@
 
             
             // Retira os jogadores do time 1 do array "jogadores" e inclui em proxReservas
-            proxReservas = jogadores.filter(jogador1 => !time1.some(jogador2 => jogador2.id === jogador1.id));
+            proxReservas = jogadores.filter(jogador1 => !time1.some(jogador2 => jogador2.id == jogador1.id));
             // Retira os jogadores do time 2 do array "jogadores" e inclui em proxReservas
-            proxReservas = proxReservas.filter(jogador1 => !time2.some(jogador2 => jogador2.id === jogador1.id));
+            proxReservas = proxReservas.filter(jogador1 => !time2.some(jogador2 => jogador2.id == jogador1.id));
             
             // Faz tudo em apenas uma filtragem
             // proxReservas = jogadores.filter(jogador1 => !time1.some(jogador2 => jogador2.id === jogador1.id) && !time2.some(jogador3 => jogador3.id === jogador1.id));
