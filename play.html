@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantera Sports</title>
+    <title>Palmeira Sports</title>
     <link rel="stylesheet" href="estilos/styles.css">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
     <div class="center">
         <div class="topo-app card">
             <img width="60" height="60" src="logo-original.png" alt="">
-            <h1>Pantera Sports</h1>
+            <h1>Palmeira Sports</h1>
         </div>
 
         <div class="corpo card">
@@ -280,7 +280,10 @@
             }
 
         // } -- FIM HANDLERSTATUSGAME ***********************************
-
+        
+        
+        // ----------------------- PRÓXIMOS JOGO -------------------------
+        // Controla modal de final de jogo
         let flagModalProx = false;
         function handleModalProxPartida() {
             let modal = document.querySelector('.area-modal-prox');
@@ -295,50 +298,81 @@
             }
         }
 
-        // step 1: add event listener to each element
+        // Adiciona um evento de click em cada elemendo
         var elements = document.querySelectorAll(".options-vencedor div");
         elements.forEach(function(element) {
             element.addEventListener("click", handleClick);
         });
 
+
+        // Controla o evento de acordo com o item
         function handleClick(event) {
-            // step 3: access the data-id attribute of the clicked element
+            // Pega o atributo data-id do elemento clicado
             var winnerId = event.target.getAttribute("data-id");
 
-            // step 4: store the value of the data-id attribute in a variable
+            // Armazena o winnerId em vencedor
             var vencedor = winnerId;
-            let proxReservas;
-            // check the value of vencedor and execute different actions
+
+            // Próximos reservas atual
+            let proxReservas = [];
+            
+            // Jogadores que entram no time que perdeu; 
+            let entram = [];
+
+            // Checa o valor do vencedor e troca os times e os reservas
             switch (vencedor) {
-            case '1':
-                console.log("Time 1 ganhou");
-                const time2Storage = JSON.parse(localStorage.getItem("time2"));
-                proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
-                proxReservas.push(...time2Storage);
+                case '1':
+                    console.log("Time 1 ganhou");
+                    const time2 = JSON.parse(localStorage.getItem("time2"));
+                    proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+                    
+                    // Insere o time 2 no final do array proxReservas
+                    proxReservas.push(...time2);
 
-                var entram = proxReservas.slice(0, qtdJogador);
-                proxReservas = proxReservas.slice(0, qtdJogador);
-                localStorage.setItem("time2", JSON.stringify(entram));
-                localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
-                window.location.reload();
-                break;
-            case '2':
-                console.log("Time 2 ganhou");
-                const time1Storage = JSON.parse(localStorage.getItem("time1"));
-                proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
-                proxReservas.push(...time1Storage);
+                    // Pega os primeiros jogadores do novo array proxReservas
+                    entram = proxReservas.slice(0, qtdJogador);
+                    
+                    // Guarda os jogadores que entram no time 2
+                    localStorage.setItem("time2", JSON.stringify(entram));
+                    
+                    // Pega os primeiros jogadores do array proxReservas de acordo com qtd de jogadores por time
+                    proxReservas.splice(0, qtdJogador);
 
-                var entram = proxReservas.slice(0, qtdJogador);
-                localStorage.setItem("time1", JSON.stringify(entram));
-                localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
-                window.location.reload();
-                break;
-            case '3':
-                console.log("Empate");
-                // Do something when vencedor is 3
-                break;
-            default:
-                console.log("Valor invalido");
+                    // Guarda os novos reservas no local storage como proxReservas
+                    localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+
+                    // Atualiza a página
+                    window.location.reload();
+                    break;
+                case '2':
+                    console.log("Time 2 ganhou");
+                    const time1 = JSON.parse(localStorage.getItem("time1"));
+                    proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+
+                    // Insere o time 1 no final do array proxReservas
+                    proxReservas.push(...time1);
+
+                    // Pega os primeiros jogadores do novo array proxReservas
+                    entram = proxReservas.slice(0, qtdJogador);
+
+                    // Guarda os jogadores que entram no time 1
+                    localStorage.setItem("time1", JSON.stringify(entram));
+
+                    // Pega os primeiros jogadores do array proxReservas de acordo com qtd de jogadores por time
+                    proxReservas.splice(0, qtdJogador);
+
+                    // Guarda os novos reservas no local storage como proxReservas
+                    localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+
+                    // Atualiza a página
+                    window.location.reload();
+                    break;
+                case '3':
+                    console.log("Empate");
+                    // Do something when vencedor is 3
+                    break;
+                default:
+                    console.log("Valor invalido");
             }
         }
 

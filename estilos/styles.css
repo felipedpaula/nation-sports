@@ -17,7 +17,7 @@ body {
     padding: 0 12px;
 }
 .topo-app {
-    display: flex;
+    display: none;
     justify-content: flex-start;
     align-items: center;
     padding: 6px 12px;
@@ -54,7 +54,8 @@ body {
 .btn-app {
     cursor: pointer;
     width: 100%;
-    background: linear-gradient(to top, #00b7ff, #3adbec);
+    /* background: linear-gradient(to top, #00b7ff, #3adbec); */
+    background: linear-gradient(to top, #00a74b, #00d660);
     height: 60px;
     color: #FFF;
     display: flex;
@@ -109,7 +110,8 @@ body {
     border-radius: 50%;
     margin-left: 10px;
     border: 0;
-    background: linear-gradient(to top, #00b7ff, #3adbec);
+    /* background: linear-gradient(to top, #00b7ff, #3adbec); */
+    background: linear-gradient(to top, #00a74b, #00d660);
     font-size: 32px;
     color: #FFF;
 }
@@ -203,7 +205,8 @@ body {
 #ordem-aleatoria {
     width: 49%;
     height: 40px;
-    background-color: #00b7ff;
+    /* background-color: #00b7ff; */
+    background-color: #00a74b;
     border: 1px solid #FFF;
     color: #FFF;
     font-weight: 600;

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pantera Sports</title>
+    <title>Palmeira Sports</title>
     <link rel="stylesheet" href="estilos/styles.css">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
     <div class="center">
         <div class="topo-app card">
             <img width="60" height="60" src="logo-original.png" alt="">
-            <h1>Pantera Sports</h1>
+            <h1>Palmeira Sports</h1>
         </div>
 
         <div class="corpo card">
@@ -64,10 +64,10 @@
     <script>
         const listaPreReservas = document.querySelector(".lista-pre-reservas");
 
-        // pega os jogadores armazenados no LocalStorage
+        // Pega os jogadores armazenados no LocalStorage
         const jogadoresStorage = JSON.parse(localStorage.getItem("jogadores"));
 
-        // se existir jogadores armazenados, adiciona-os na lista de pré-reservas no HTML
+        // Se existir jogadores armazenados, adiciona-os na lista de pré-reservas no HTML
         if (jogadoresStorage) {
             jogadoresStorage.forEach(jogador => {
                 const itemPreReserva = document.createElement("div");
@@ -81,9 +81,10 @@
 
         // Embaralha os jogadores e chama a funcao de add no HTML
         function shuffleJogadores() {
-            // faz uma cópia do array de jogadoresStorage
+            // Faz uma cópia do array de jogadoresStorage
             const jogadoresAleatorios = jogadoresStorage.slice();
-            // usa o algoritmo de Fisher-Yates para embaralhar o array
+            
+            // Usa o algoritmo de Fisher-Yates para embaralhar o array
             for (let i = jogadoresAleatorios.length - 1; i > 0; i--) {
                 let j = Math.floor(Math.random() * (i + 1));
                 [jogadoresAleatorios[i], jogadoresAleatorios[j]] = [jogadoresAleatorios[j], jogadoresAleatorios[i]];
@@ -94,19 +95,19 @@
 
         // Embaralha os jogadores e adiciona no HTML
         function addJogadoresAleatoriosToHTML(jogadoresAleatorios) {
-            // pega os elementos HTML dos times
+            // Pega os elementos HTML dos times
             const time1 = document.querySelector(".pre-time-1 .lista-pre-jogadores");
             const time2 = document.querySelector(".pre-time-2 .lista-pre-jogadores");
 
-            // pega a quantindade de jogadores por time
+            // Pega a quantindade de jogadores por time
             const dadosJogo = JSON.parse(localStorage.getItem('dadosJogo'));
             const qtdPorTime = dadosJogo.jogadoresPorTime;
 
-            // remove os elementos filhos
+            // Remove os elementos filhos
             time1.innerHTML = '';
             time2.innerHTML = '';
 
-            // percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
+            // Percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
             for (let i = 0; i < qtdPorTime; i++) {
                 const jogador = jogadoresAleatorios[i];
                 const preJogadorItem = document.createElement("div");
@@ -116,7 +117,7 @@
                 time1.appendChild(preJogadorItem);
             }
 
-            // percorre os próximos 5 jogadores e adiciona-os no HTML do time 2
+            // Percorre os próximos 5 jogadores e adiciona-os no HTML do time 2
             for (let i = qtdPorTime; i < qtdPorTime*2; i++) {
                 const jogador = jogadoresAleatorios[i];
                 const preJogadorItem = document.createElement("div");
@@ -129,22 +130,22 @@
    
         // Adiciona os jogadores na ordem de chegada
         function addJogadoresChegadaToHTML() {
-            // pega os jogadores armazenados no LocalStorage
+            // Pega os jogadores armazenados no LocalStorage
             const jogadoresStorage = JSON.parse(localStorage.getItem("jogadores"));
 
-            // pega os elementos HTML dos times
+            // Pega os elementos HTML dos times
             const time1 = document.querySelector(".pre-time-1 .lista-pre-jogadores");
             const time2 = document.querySelector(".pre-time-2 .lista-pre-jogadores");
 
-            // pega a quantindade de jogadores por time
+            // Pega a quantindade de jogadores por time
             const dadosJogo = JSON.parse(localStorage.getItem('dadosJogo'));
             const qtdPorTime = dadosJogo.jogadoresPorTime;
 
-            // remove os elementos filhos
+            // Remove os elementos filhos
             time1.innerHTML = '';
             time2.innerHTML = '';
             
-            // percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
+            // Percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
             for (let i = 0; i < qtdPorTime; i++) {
                 const jogador = jogadoresStorage[i];
                 const preJogadorItem = document.createElement("div");
@@ -154,7 +155,7 @@
                 time1.appendChild(preJogadorItem);
             }
 
-            // percorre os próximos 5 jogadores e adiciona-os no HTML do time 2
+            // Percorre os próximos 5 jogadores e adiciona-os no HTML do time 2
             for (let i = qtdPorTime; i < qtdPorTime*2; i++) {
                 const jogador = jogadoresStorage[i];
                 const preJogadorItem = document.createElement("div");
@@ -166,37 +167,45 @@
         }
 
         function start() {
-            // pega os elementos HTML dos times
+            // Pega os elementos HTML dos times
             const time1Elements = document.querySelector(".pre-time-1 .lista-pre-jogadores");
             const time2Elements = document.querySelector(".pre-time-2 .lista-pre-jogadores");
             const qtdJogador = JSON.parse(localStorage.getItem('dadosJogo')).jogadoresPorTime;
 
-            // cria arrays vazios para guardar os jogadores
+            // Cria arrays vazios para guardar os jogadores
             const time1 = [];
             const time2 = [];
             var proxReservas = [];
             const jogadores = JSON.parse(localStorage.getItem("jogadores"));
 
-            // percorre os elementos filhos de cada time e adiciona os jogadores nos arrays
+            // Percorre os elementos filhos de cada time e adiciona os jogadores nos arrays
             for (let i = 0; i < time1Elements.childElementCount; i++) {
                 const jogadorItem = time1Elements.children[i];
                 const jogador = new Jogador(jogadorItem.dataset.id, jogadorItem.textContent);
                 time1.push(jogador);
-                proxReservas = jogadores.push(...time1);
             }
             for (let i = 0; i < time2Elements.childElementCount; i++) {
                 const jogadorItem = time2Elements.children[i];
                 const jogador = new Jogador(jogadorItem.dataset.id, jogadorItem.textContent);
                 time2.push(jogador);
-                proxReservas = jogadores.push(...time2);
             }
 
-            // guarda os times no LocalStorage
+            
+            // Retira os jogadores do time 1 do array "jogadores" e inclui em proxReservas
+            proxReservas = jogadores.filter(jogador1 => !time1.some(jogador2 => jogador2.id === jogador1.id));
+            // Retira os jogadores do time 2 do array "jogadores" e inclui em proxReservas
+            proxReservas = proxReservas.filter(jogador1 => !time2.some(jogador2 => jogador2.id === jogador1.id));
+            
+            // Faz tudo em apenas uma filtragem
+            // proxReservas = jogadores.filter(jogador1 => !time1.some(jogador2 => jogador2.id === jogador1.id) && !time2.some(jogador3 => jogador3.id === jogador1.id));
+            
+            // Guarda os times 1 e 2 e proxReservas no LocalStorage
             localStorage.setItem("time1", JSON.stringify(time1));
             localStorage.setItem("time2", JSON.stringify(time2));
             localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
 
-            window.location.href = '/play.html';
+            // Vai pra tela de inicar o jogo
+            window.location.href = '/nation-sports/play.html';
         }
 
 
