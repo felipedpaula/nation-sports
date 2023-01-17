@@ -61,7 +61,7 @@
             const jogadoresPorTime = document.getElementById("jogadores-por-time").value;
             const tempoDeJogo = document.getElementById("tempo-jogo").value;
             const pontosParaAcabar = document.getElementById("pontos-fim").value;
-            const novoJogo = new Jogo(nomeSessao, 'futebol', jogadoresPorTime, tempoDeJogo, pontosParaAcabar);
+            const novoJogo = new Jogo(nomeSessao, 'futebol', parseInt(jogadoresPorTime), parseInt(tempoDeJogo), parseInt(pontosParaAcabar));
             const jogo = JSON.stringify(novoJogo);
             localStorage.setItem("dadosJogo", jogo);
 

@@ -169,26 +169,32 @@
             // pega os elementos HTML dos times
             const time1Elements = document.querySelector(".pre-time-1 .lista-pre-jogadores");
             const time2Elements = document.querySelector(".pre-time-2 .lista-pre-jogadores");
+            const qtdJogador = JSON.parse(localStorage.getItem('dadosJogo')).jogadoresPorTime;
 
             // cria arrays vazios para guardar os jogadores
             const time1 = [];
             const time2 = [];
+            var proxReservas = [];
+            const jogadores = JSON.parse(localStorage.getItem("jogadores"));
 
             // percorre os elementos filhos de cada time e adiciona os jogadores nos arrays
             for (let i = 0; i < time1Elements.childElementCount; i++) {
                 const jogadorItem = time1Elements.children[i];
                 const jogador = new Jogador(jogadorItem.dataset.id, jogadorItem.textContent);
                 time1.push(jogador);
+                proxReservas = jogadores.push(...time1);
             }
             for (let i = 0; i < time2Elements.childElementCount; i++) {
                 const jogadorItem = time2Elements.children[i];
                 const jogador = new Jogador(jogadorItem.dataset.id, jogadorItem.textContent);
                 time2.push(jogador);
+                proxReservas = jogadores.push(...time2);
             }
 
             // guarda os times no LocalStorage
             localStorage.setItem("time1", JSON.stringify(time1));
             localStorage.setItem("time2", JSON.stringify(time2));
+            localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
 
             window.location.href = '/play.html';
         }

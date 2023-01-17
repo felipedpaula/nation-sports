@@ -37,12 +37,12 @@
                                 <div class="btn-controll pause">
                                     <img width="25px" src="pause.png" alt="Pause">
                                 </div>
-                                <div class="btn-controll stop">
+                                <!-- <div class="btn-controll stop">
                                     <img width="25px" src="stop.png" alt="Stop">
-                                </div>
+                                </div> -->
                             </div>
                             <div class="cronometro">
-                                <span class="tempo-restante">7:00</span>
+                                <span class="tempo-restante"></span>
                             </div>
                         </div>
                     </div>
@@ -75,9 +75,21 @@
                     </div>
                 </div>
 
-                <button onclick="proximaPartida()" class="btn-app ">
+                <button onclick="handleModalProxPartida()" class="btn-app ">
                     PRÓXIMA PARTIDA
                 </button>
+
+                <div class="area-modal-prox">
+                    <div onclick="handleModalProxPartida()" class="fechar-modal">Cancelar</div>
+                    <div class="modal card">    
+                        <span>Quem ganhou ????</span>
+                        <div class="options-vencedor">
+                            <div data-id="1" class="venceu-1">1</div>
+                            <div data-id="2" class="venceu-2">2</div>
+                            <div data-id="3" class="empate">empate</div>
+                        </div>
+                    </div>
+                </div>
 
                 <hr>
                 
@@ -97,12 +109,21 @@
     </div>
 
     <script>
+
+        var tempoJogo = JSON.parse(localStorage.getItem('dadosJogo')).tempoDeJogo;
+        var qtdJogador = JSON.parse(localStorage.getItem('dadosJogo')).jogadoresPorTime;
+        // var tempoJogo = 0.1;
+
+        const minutos = tempoJogo;
+        const segundos = tempoJogo % 60;
+        document.querySelector(".tempo-restante").innerText = `${minutos < 10 ? "0" + minutos : minutos}:00`;
+
         window.onload = function() {
             addJogadoresTime1ToHTML();
             addJogadoresTime2ToHTML();
             definirProxReservas();
             controladorPontos();
-            handlerStatusGame();
+            // handlerStatusGame();
             // handlerTimerGame();
         }
 
@@ -143,14 +164,15 @@
         }
 
         function definirProxReservas() {
-            const jogadores = JSON.parse(localStorage.getItem("jogadores"));
-            const time1 = JSON.parse(localStorage.getItem("time1"));
-            const time2 = JSON.parse(localStorage.getItem("time2"));
+            // const jogadores = JSON.parse(localStorage.getItem("jogadores"));
+            // const time1 = JSON.parse(localStorage.getItem("time1"));
+            // const time2 = JSON.parse(localStorage.getItem("time2"));
 
-            const jogadoresTime1Ids = time1.map(jogador => jogador.id);
-            const jogadoresTime2Ids = time2.map(jogador => jogador.id);
+            // const jogadoresTime1Ids = time1.map(jogador => jogador.id);
+            // const jogadoresTime2Ids = time2.map(jogador => jogador.id);
 
-            const proxReservas = jogadores.filter(jogador => !jogadoresTime1Ids.includes(jogador.id) && !jogadoresTime2Ids.includes(jogador.id));
+            // const proxReservas = jogadores.filter(jogador => !jogadoresTime1Ids.includes(jogador.id) && !jogadoresTime2Ids.includes(jogador.id));
+            const proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
             const containerProxReservas = document.querySelector(".proximo-time");
 
             for (let i = 0; i < proxReservas.length; i++) {
@@ -203,60 +225,121 @@
             });
         }
 
-        function handlerStatusGame() {
-            const playBtn = document.querySelector(".play img");
-            const pauseBtn = document.querySelector(".pause img");
-            const stopBtn = document.querySelector(".stop img");
-            const sinal = document.querySelector(".sinal");
+        // function handlerStatusGame() {
+        const playBtn = document.querySelector(".play img");
+        const pauseBtn = document.querySelector(".pause img");
+        const stopBtn = document.querySelector(".stop img");
+        const sinal = document.querySelector(".sinal");
+        let intervalId;
+        let tempoRestante = tempoJogo * 60;
 
-            playBtn.addEventListener("click", playGame);
-            pauseBtn.addEventListener("click", pauseGame);
-            stopBtn.addEventListener("click", stopGame);
-
-            function playGame() {
-                sinal.classList.remove("parado");
+        playBtn.addEventListener("click", playGame);
+        pauseBtn.addEventListener("click", pauseGame);
+        
+        function playGame() {
+            if(!sinal.classList.contains('em-andamento')) {
                 iniciarCronometro();
+                sinal.classList.remove("parado");
                 sinal.classList.remove("fim-de-jogo");
                 sinal.classList.add("em-andamento");
                 sinal.innerText = "Em andamento";
             }
+        }
 
-            function pauseGame() {
+        function pauseGame() {
+                pausarCronometro();
                 sinal.classList.remove("em-andamento");
                 sinal.classList.remove("fim-de-jogo");
                 sinal.classList.add("parado");
                 sinal.innerText = "Pausado";
             }
 
-            function stopGame() {
-                sinal.classList.remove("em-andamento");
-                sinal.classList.remove("parado");
-                sinal.classList.add("fim-de-jogo");
-                sinal.innerText = "Fim de jogo";
-            }
-
-            let intervalId;
-            let tempoRestante = 7 * 60;
-
-            function iniciarCronometro() {
+        function iniciarCronometro() {
                 intervalId = setInterval(atualizarCronometro, 1000);
             }
             
-            function atualizarCronometro() {
+        function atualizarCronometro() {
                 tempoRestante--;
                 const minutos = Math.floor(tempoRestante / 60);
                 const segundos = tempoRestante % 60;
                 document.querySelector(".tempo-restante").innerText = `${minutos}:${segundos < 10 ? "0" + segundos : segundos}`;
                 if (tempoRestante === 0) {
-                    pararCronometro();
-                    alert("Fim de jogo!");
+                    alert("Saiu Cabô");
+                    clearInterval(intervalId);
+                    sinal.classList.remove("parado");
+                    sinal.classList.add("fim-de-jogo");
+                    sinal.classList.remove("em-andamento");
+                    sinal.innerHTML = "Fim de jogo"
+                    tempoRestante = tempoJogo;
+                    document.querySelector(".tempo-restante").innerText = `${minutos}:${segundos < 10 ? "0" + segundos : segundos}`;
                 }
             }
             
-            function pararCronometro() {
+        function pausarCronometro() {
                 clearInterval(intervalId);
             }
 
+        // } -- FIM HANDLERSTATUSGAME ***********************************
+
+        let flagModalProx = false;
+        function handleModalProxPartida() {
+            let modal = document.querySelector('.area-modal-prox');
+            if (flagModalProx == false) {
+                modal.style.display = 'flex';
+                flagModalProx = true;
+                pausarCronometro();
+            } else {
+                modal.style.display = 'none';
+                flagModalProx = false;
+                iniciarCronometro();
+            }
+        }
+
+        // step 1: add event listener to each element
+        var elements = document.querySelectorAll(".options-vencedor div");
+        elements.forEach(function(element) {
+            element.addEventListener("click", handleClick);
+        });
+
+        function handleClick(event) {
+            // step 3: access the data-id attribute of the clicked element
+            var winnerId = event.target.getAttribute("data-id");
+
+            // step 4: store the value of the data-id attribute in a variable
+            var vencedor = winnerId;
+            let proxReservas;
+            // check the value of vencedor and execute different actions
+            switch (vencedor) {
+            case '1':
+                console.log("Time 1 ganhou");
+                const time2Storage = JSON.parse(localStorage.getItem("time2"));
+                proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+                proxReservas.push(...time2Storage);
+
+                var entram = proxReservas.slice(0, qtdJogador);
+                proxReservas = proxReservas.slice(0, qtdJogador);
+                localStorage.setItem("time2", JSON.stringify(entram));
+                localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+                window.location.reload();
+                break;
+            case '2':
+                console.log("Time 2 ganhou");
+                const time1Storage = JSON.parse(localStorage.getItem("time1"));
+                proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+                proxReservas.push(...time1Storage);
+
+                var entram = proxReservas.slice(0, qtdJogador);
+                localStorage.setItem("time1", JSON.stringify(entram));
+                localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+                window.location.reload();
+                break;
+            case '3':
+                console.log("Empate");
+                // Do something when vencedor is 3
+                break;
+            default:
+                console.log("Valor invalido");
+            }
         }
 
     </script>
