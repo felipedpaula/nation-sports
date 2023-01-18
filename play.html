@@ -16,7 +16,7 @@
         <div class="topo-app card">
             <img width="60" height="60" src="logo-original.png" alt="">
             <h1></h1>
-            <a class="btn-regular" href="/nation-sports/index.html">Início</a>
+            <a class="btn-regular" href="/index.html">Início</a>
         </div>
 
         <div class="corpo card">
@@ -101,6 +101,12 @@
                     </div>
                 </div>
 
+                <label class="label-app">| Adicionar jogador</label>
+                <div class="input-area">
+                    <input class="input-app" type="text" name="nome-jogador" id="nome-jogador">
+                    <button id="add-jogador">+</button>
+                </div>    
+
                 <!-- <button onclick="visaoJogo()" class="btn-app ">
                     VISAO DE JOGO
                 </button> -->
@@ -109,15 +115,22 @@
         </div>
     </div>
 
+    <script src="classes/Jogador.js"></script>
+
     <script>
 
         var titulo = JSON.parse(localStorage.getItem('dadosJogo')).nome;
         document.querySelector('h1').innerHTML = titulo;
 
+        // Cria um novo objeto de áudio
+        var audio = new Audio('apito.mp3');
 
         var tempoJogo = JSON.parse(localStorage.getItem('dadosJogo')).tempoDeJogo;
         var qtdJogador = JSON.parse(localStorage.getItem('dadosJogo')).jogadoresPorTime;
+        var jogadores = JSON.parse(localStorage.getItem('jogadores'));
         // var tempoJogo = 0.1;
+
+        const listaJogadores = document.querySelector(".proximo-time");
 
         const minutos = tempoJogo;
         const segundos = tempoJogo % 60;
@@ -128,6 +141,7 @@
             addJogadoresTime2ToHTML();
             definirProxReservas();
             controladorPontos();
+            novoJogador();
             // handlerStatusGame();
             // handlerTimerGame();
         }
@@ -261,6 +275,11 @@
 
         function iniciarCronometro() {
                 intervalId = setInterval(atualizarCronometro, 1000);
+
+                if(tempoRestante/60 == tempoJogo) {
+                    audio.volume = 0.2;
+                    audio.play();
+                }
             }
             
         function atualizarCronometro() {
@@ -269,6 +288,7 @@
                 const segundos = tempoRestante % 60;
                 document.querySelector(".tempo-restante").innerText = `${minutos}:${segundos < 10 ? "0" + segundos : segundos}`;
                 if (tempoRestante === 0) {
+                    audio.play();
                     alert("Saiu Cabô");
                     clearInterval(intervalId);
                     sinal.classList.remove("parado");
@@ -380,6 +400,60 @@
                     console.log("Valor invalido");
             }
         }
+
+        // Adiciona jogador a lista de reservas e atualizo HTML
+        function novoJogador() {
+            let nextId = localStorage.getItem('nextId');
+            
+            if (nextId == null) {
+                nextId = 1;
+                localStorage.setItem('nextId', nextId)
+            }
+
+            const addJogadorBtn = document.getElementById("add-jogador");
+            addJogadorBtn.addEventListener("click", function(){
+                // pega o valor do nome do jogador
+                const nome = document.getElementById("nome-jogador").value;
+
+                // instancia um objeto da classe Jogador
+                const jogador = new Jogador(parseInt(nextId), nome);
+
+                // insere o objeto no array jogadores[]
+                jogadores.push(jogador);
+                
+                // incrementa 1 para o id do proximo Jogador
+                nextId++;
+
+                localStorage.setItem('nextId', nextId)
+
+                // Salva o novo array no storage
+                localStorage.setItem("jogadores", JSON.stringify(jogadores));
+
+                let proxReservas = JSON.parse(localStorage.getItem('proxReservas'));
+                proxReservas.push(jogador);
+                localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+                
+                // limpa o input
+                document.getElementById("nome-jogador").value = "";
+
+                // cria o elemendo jogador-item
+                // const jogadorItem = document.createElement("div");
+                // jogadorItem.classList.add("proximo-time-jogador");
+                // const jogadorNome = document.createElement("span");
+                // jogadorNome.innerText = jogador.nome;
+                // jogadorItem.appendChild(jogadorNome);
+                // const removeJogador = document.createElement("div");
+                // removeJogador.setAttribute("class", "remove-jogador");
+                // removeJogador.setAttribute("data-id", jogador.id);
+                // removeJogador.innerText = "-";
+                // jogadorItem.appendChild(removeJogador);
+                // listaJogadores.appendChild(jogadorItem);
+
+                // location.reload();
+            });
+
+        }
+
 
     </script>
 </body>
