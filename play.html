@@ -15,7 +15,7 @@
     <div class="center">
         <div class="topo-app card">
             <img width="60" height="60" src="logo-original.png" alt="">
-            <h1>Palmeira Sports</h1>
+            <h1></h1>
             <a class="btn-regular" href="/nation-sports/index.html">Início</a>
         </div>
 
@@ -110,6 +110,10 @@
     </div>
 
     <script>
+
+        var titulo = JSON.parse(localStorage.getItem('dadosJogo')).nome;
+        document.querySelector('h1').innerHTML = titulo;
+
 
         var tempoJogo = JSON.parse(localStorage.getItem('dadosJogo')).tempoDeJogo;
         var qtdJogador = JSON.parse(localStorage.getItem('dadosJogo')).jogadoresPorTime;
