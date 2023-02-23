@@ -16,7 +16,7 @@
         <div class="topo-app card">
             <img width="60" height="60" src="logo-original.png" alt="">
             <h1></h1>
-            <a class="btn-regular" href="/nation-sports/index.html">Início</a>
+            <a class="btn-regular" href="index.html">Início</a>
         </div>
 
         <div class="corpo card">
@@ -316,10 +316,14 @@
                 modal.style.display = 'flex';
                 flagModalProx = true;
                 pausarCronometro();
+                sinal.classList.remove("em-andamento");
+                sinal.classList.remove("fim-de-jogo");
+                sinal.classList.add("parado");
+                sinal.innerText = "Pausado";
             } else {
                 modal.style.display = 'none';
                 flagModalProx = false;
-                iniciarCronometro();
+                // iniciarCronometro();
             }
         }
 
