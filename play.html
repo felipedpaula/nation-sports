@@ -92,12 +92,17 @@
                     </div>
                 </div>
 
-                <!-- <div class="area-modal-jogador">
+                <div class="area-modal-jogador">
                     <div class="fechar-modal-jogador">Cancelar</div>
                     <div class="modal card">    
-                        Jogador
+                        <div class="options-jogador">
+                            <div class="options-jogador_top">
+                                <strong>Jogador:</strong>
+                                <div class="options-jogador_name">Felipe</div>
+                            </div>
+                        </div>
                     </div>
-                </div> -->
+                </div>
 
                 <hr>
                 
@@ -249,6 +254,25 @@
                     gols--;
                     golsSpan2.innerText = gols;
                 }
+            });
+        }
+
+        function controladorJogadores() {
+            // Selecione todos os elementos com a classe "proximo-time-jogador"
+            const jogadores = document.querySelectorAll('.proximo-time-jogador');
+            var modalJogador = document.querySelector('.area-modal-jogador');
+            var closeModalJogador = document.querySelector('.fechar-modal-jogador');
+
+            // Adicione um evento de clique em cada jogador
+            jogadores.forEach(jogador => {
+                jogador.addEventListener('click', () => {
+                    modalJogador.style.display = 'flex';
+                    console.log('jogador id: ' + jogador.getAttribute('data-id'));
+                });
+            });
+
+            closeModalJogador.addEventListener('click', () => {
+                modalJogador.style.display = 'none';
             });
         }
 
