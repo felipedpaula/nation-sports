@@ -347,7 +347,8 @@ body {
     margin: 10px 0;
     border-radius: 6px;
 }
-.area-modal-prox {
+.area-modal-prox,
+.area-modal-jogador {
     position: absolute;
     display: none;
     flex-direction: column;
@@ -360,7 +361,8 @@ body {
     overflow: hidden;
     background-color: #00000030;
 }
-.fechar-modal {
+.fechar-modal,
+.fechar-modal-jogador {
     width: 80%;
     height: 40px;
     display: flex;

@@ -81,7 +81,7 @@
                 </button>
 
                 <div class="area-modal-prox">
-                    <div onclick="handleModalProxPartida()" class="fechar-modal">Cancelar</div>
+                    <div onclick="fecharModalProx()" class="fechar-modal">Cancelar</div>
                     <div class="modal card">    
                         <span>Quem ganhou ????</span>
                         <div class="options-vencedor">
@@ -91,6 +91,13 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- <div class="area-modal-jogador">
+                    <div class="fechar-modal-jogador">Cancelar</div>
+                    <div class="modal card">    
+                        Jogador
+                    </div>
+                </div> -->
 
                 <hr>
                 
@@ -142,6 +149,7 @@
             definirProxReservas();
             controladorPontos();
             novoJogador();
+            controladorJogadores();
             // handlerStatusGame();
             // handlerTimerGame();
         }
@@ -301,8 +309,8 @@
             }
             
         function pausarCronometro() {
-                clearInterval(intervalId);
-            }
+            clearInterval(intervalId);
+        }
 
         // } -- FIM HANDLERSTATUSGAME ***********************************
         
@@ -327,12 +335,16 @@
             }
         }
 
+        function fecharModalProx() {
+            let modal = document.querySelector('.area-modal-prox');
+            modal.style.display = 'none';
+        }
+
         // Adiciona um evento de click em cada elemendo
         var elements = document.querySelectorAll(".options-vencedor div");
         elements.forEach(function(element) {
             element.addEventListener("click", handleClick);
         });
-
 
         // Controla o evento de acordo com o item
         function handleClick(event) {
@@ -372,7 +384,7 @@
 
                     // Atualiza a página
                     window.location.reload();
-                    break;
+                break;
                 case '2':
                     console.log("Time 2 ganhou");
                     const time1 = JSON.parse(localStorage.getItem("time1"));
@@ -395,11 +407,42 @@
 
                     // Atualiza a página
                     window.location.reload();
-                    break;
+                break;
                 case '3':
                     console.log("Empate");
-                    // Do something when vencedor is 3
-                    break;
+                    const time1Empate = JSON.parse(localStorage.getItem("time1"));
+                    const time2Empate = JSON.parse(localStorage.getItem("time2"));
+                    proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+                    
+                    // Insere os times que empataram no final do array proxReservas
+                    proxReservas.push(...time1Empate, ...time2Empate);
+
+                    // Pega os primeiros jogadores do novo array proxReservas
+                    const entramTime1 = proxReservas.slice(0, qtdJogador);
+                    
+                    // Remove os jogadores que entram do array proxReservas
+                    proxReservas.splice(0, qtdJogador);
+
+                    // Guarda os jogadores que entram no time 1
+                    localStorage.setItem("time1", JSON.stringify(entramTime1));
+
+                    // Pega os próximos jogadores para completar o time 1, se houver
+                    const sobraTime1 = qtdJogador - entramTime1.length;
+                    const novosTime1 = proxReservas.splice(0, sobraTime1);
+
+                    // Se sobrarem jogadores, preenche o time 2 com eles
+                    const sobraTime2 = qtdJogador - novosTime1.length;
+                    const novosTime2 = sobraTime2 > 0 ? proxReservas.splice(0, sobraTime2) : [];
+
+                    // Guarda os novos reservas no local storage como proxReservas
+                    localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+
+                    // Guarda os novos jogadores no time 2
+                    localStorage.setItem("time2", JSON.stringify(novosTime2));
+
+                    // Atualiza a página
+                    window.location.reload();
+                break;
                 default:
                     console.log("Valor invalido");
             }
@@ -441,19 +484,13 @@
                 document.getElementById("nome-jogador").value = "";
 
                 // cria o elemendo jogador-item
-                // const jogadorItem = document.createElement("div");
-                // jogadorItem.classList.add("proximo-time-jogador");
-                // const jogadorNome = document.createElement("span");
-                // jogadorNome.innerText = jogador.nome;
-                // jogadorItem.appendChild(jogadorNome);
-                // const removeJogador = document.createElement("div");
-                // removeJogador.setAttribute("class", "remove-jogador");
-                // removeJogador.setAttribute("data-id", jogador.id);
-                // removeJogador.innerText = "-";
-                // jogadorItem.appendChild(removeJogador);
-                // listaJogadores.appendChild(jogadorItem);
+                const jogadorItem = document.createElement("div");
+                jogadorItem.classList.add("proximo-time-jogador");
+                const jogadorNome = document.createElement("span");
+                jogadorNome.innerText = jogador.nome;
+                jogadorItem.appendChild(jogadorNome);
+                listaJogadores.appendChild(jogadorItem);
 
-                // location.reload();
             });
 
         }

@@ -138,32 +138,31 @@
             const time1 = document.querySelector(".pre-time-1 .lista-pre-jogadores");
             const time2 = document.querySelector(".pre-time-2 .lista-pre-jogadores");
 
-            // Pega a quantindade de jogadores por time
+            // Pega a quantidade de jogadores por time
             const dadosJogo = JSON.parse(localStorage.getItem('dadosJogo'));
             const qtdPorTime = dadosJogo.jogadoresPorTime;
 
             // Remove os elementos filhos
             time1.innerHTML = '';
             time2.innerHTML = '';
-            
-            // Percorre os primeiros 5 jogadores e adiciona-os no HTML do time 1
-            for (let i = 0; i < qtdPorTime; i++) {
-                const jogador = jogadoresStorage[i];
-                const preJogadorItem = document.createElement("div");
-                preJogadorItem.classList.add("pre-jogador-item");
-                preJogadorItem.innerText = jogador.nome;
-                preJogadorItem.setAttribute('data-id', jogador.id);
-                time1.appendChild(preJogadorItem);
-            }
 
-            // Percorre os próximos 5 jogadores e adiciona-os no HTML do time 2
-            for (let i = qtdPorTime; i < qtdPorTime*2; i++) {
+            // Adiciona os jogadores nos times de forma alternada
+            for (let i = 0; i < jogadoresStorage.length; i++) {
                 const jogador = jogadoresStorage[i];
                 const preJogadorItem = document.createElement("div");
                 preJogadorItem.classList.add("pre-jogador-item");
                 preJogadorItem.innerText = jogador.nome;
                 preJogadorItem.setAttribute('data-id', jogador.id);
-                time2.appendChild(preJogadorItem);
+
+                if (i % 2 == 0 && time1.children.length < qtdPorTime) {
+                    time1.appendChild(preJogadorItem);
+                } else if (time2.children.length < qtdPorTime) {
+                    time2.appendChild(preJogadorItem);
+                }
+                
+                if (time1.children.length == qtdPorTime && time2.children.length == qtdPorTime) {
+                    break;
+                }
             }
         }
 
@@ -206,7 +205,7 @@
             localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
 
             // Vai pra tela de inicar o jogo
-            window.location.href = 'play.html';
+            window.location.href = '/nation-sports/play.html';
         }
 
 
