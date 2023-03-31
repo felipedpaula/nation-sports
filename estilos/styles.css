@@ -361,9 +361,6 @@ body {
     overflow: hidden;
     background-color: #00000030;
 }
-.area-modal-jogador {
-    display: flex !important;
-}
 .options-jogador {
     width: 100%;
     display: flex;
