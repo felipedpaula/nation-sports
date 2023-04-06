@@ -369,7 +369,31 @@ body {
 .options-jogador_top {
     width: 100%;
     display: flex;
+    flex-direction: column;
     gap: 15px;
+}
+.options-jogador_area {
+    width: 100%;
+}
+.info-jogador-row {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.options-jogador hr {
+    width: 100%;
+    border-top: 1px solid #cecece;
+}
+.btn-edit-nome {
+    height: 40px;
+    border: 0;
+    border-radius: 4px;
+    background-color: #00b7ff;
+    color: #FFF;
+}
+.options-jogador_area label {
+    margin: 5px 0;
+    font-weight: 500;
 }
 .fechar-modal,
 .fechar-modal-jogador {

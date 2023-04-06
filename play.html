@@ -97,8 +97,25 @@
                     <div class="modal card">    
                         <div class="options-jogador">
                             <div class="options-jogador_top">
-                                <strong>Jogador:</strong>
-                                <div class="options-jogador_name">Felipe</div>
+                                <div class="info-jogador-row">
+                                    <strong>Jogador:</strong>
+                                    <div class="options-jogador_name"></div>
+                                </div>
+                                <div class="info-jogador-row">
+                                    <strong>Gols:</strong>
+                                    <div class="options-jogador_gols"></div>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="options-jogador_area" data-id="">
+                                <label for="jogadorEditNome">Editar nome:</label>
+                                <div class="info-jogador-row">
+                                    <input class="input-app" type="text" name="jogadorEditNome" id="jogadorEditNome">
+                                    <button onclick="editNomeJogador()" class="btn-edit-nome">Salvar</button>
+                                </div>
+                                <div style="margin-top: 20px;" class="info-jogador-row">
+                                    <button onclick="removeJogador()" class="btn-remove-jogador">Excluir jogador</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -267,12 +284,46 @@
             jogadores.forEach(jogador => {
                 jogador.addEventListener('click', () => {
                     modalJogador.style.display = 'flex';
-                    console.log('jogador id: ' + jogador.getAttribute('data-id'));
+                    let jogadorId = jogador.getAttribute('data-id');
+                    let proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+                    // console.log('jogador id: ' + jogadorId);
+                    proxReservas.forEach(element => {
+                        if(element.id == jogadorId) {
+                            document.querySelector('.options-jogador_name').textContent = element.nome;
+                            document.querySelector('.options-jogador_gols').textContent = element.gols;
+                            document.querySelector('#jogadorEditNome').value = element.nome;
+                            document.querySelector('.options-jogador_area').setAttribute('data-id', element.id);
+                        }
+                    });
                 });
             });
 
             closeModalJogador.addEventListener('click', () => {
                 modalJogador.style.display = 'none';
+            });
+        }
+
+        function editNomeJogador() {
+            let proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+            let idReferente = document.querySelector('.options-jogador_area').getAttribute('data-id');
+            proxReservas.forEach(element => {
+                if(element.id == idReferente) {
+                    element.nome = document.querySelector('#jogadorEditNome').value;
+                    localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+                    window.location.reload();
+                }
+            });
+        }
+
+        function removeJogador() {
+            let proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+            let idReferente = document.querySelector('.options-jogador_area').getAttribute('data-id');
+            proxReservas.forEach((element, index) => {
+                if(element.id == idReferente) {
+                    proxReservas.splice(index, 1);
+                    localStorage.setItem("proxReservas", JSON.stringify(proxReservas));
+                    window.location.reload();
+                }
             });
         }
 
@@ -298,39 +349,39 @@
         }
 
         function pauseGame() {
-                pausarCronometro();
-                sinal.classList.remove("em-andamento");
-                sinal.classList.remove("fim-de-jogo");
-                sinal.classList.add("parado");
-                sinal.innerText = "Pausado";
-            }
+            pausarCronometro();
+            sinal.classList.remove("em-andamento");
+            sinal.classList.remove("fim-de-jogo");
+            sinal.classList.add("parado");
+            sinal.innerText = "Pausado";
+        }
 
         function iniciarCronometro() {
-                intervalId = setInterval(atualizarCronometro, 1000);
+            intervalId = setInterval(atualizarCronometro, 1000);
 
-                if(tempoRestante/60 == tempoJogo) {
-                    audio.volume = 0.2;
-                    audio.play();
-                }
+            if(tempoRestante/60 == tempoJogo) {
+                audio.volume = 0.2;
+                audio.play();
             }
+        }
             
         function atualizarCronometro() {
-                tempoRestante--;
-                const minutos = Math.floor(tempoRestante / 60);
-                const segundos = tempoRestante % 60;
+            tempoRestante--;
+            const minutos = Math.floor(tempoRestante / 60);
+            const segundos = tempoRestante % 60;
+            document.querySelector(".tempo-restante").innerText = `${minutos}:${segundos < 10 ? "0" + segundos : segundos}`;
+            if (tempoRestante === 0) {
+                audio.play();
+                alert("Saiu Cabô");
+                clearInterval(intervalId);
+                sinal.classList.remove("parado");
+                sinal.classList.add("fim-de-jogo");
+                sinal.classList.remove("em-andamento");
+                sinal.innerHTML = "Fim de jogo"
+                tempoRestante = tempoJogo;
                 document.querySelector(".tempo-restante").innerText = `${minutos}:${segundos < 10 ? "0" + segundos : segundos}`;
-                if (tempoRestante === 0) {
-                    audio.play();
-                    alert("Saiu Cabô");
-                    clearInterval(intervalId);
-                    sinal.classList.remove("parado");
-                    sinal.classList.add("fim-de-jogo");
-                    sinal.classList.remove("em-andamento");
-                    sinal.innerHTML = "Fim de jogo"
-                    tempoRestante = tempoJogo;
-                    document.querySelector(".tempo-restante").innerText = `${minutos}:${segundos < 10 ? "0" + segundos : segundos}`;
-                }
             }
+        }
             
         function pausarCronometro() {
             clearInterval(intervalId);
