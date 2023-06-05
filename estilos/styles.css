@@ -312,7 +312,8 @@ body {
 }
 .jogador-time-1,
 .jogador-time-2,
-.proximo-time-jogador {
+.proximo-time-jogador,
+.jogador-gol {
     width: 100%;
     display: flex;
     align-items: center;
@@ -469,4 +470,28 @@ body {
     background-color: #909090;
     border: 2px solid #000;
     border-radius: 18px;
+}
+.area-gol-jogador {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #00000050;
+    width: 100vw;
+    height: 100vh;
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.area-gol-jogador-center {
+    width: 50%;
+    background-color: #FFF;
+    padding: 12px;
+    border-radius: 6px;
+}
+.lista-add-gol-jogador {
+    width: 100%;
+}
+.topo-area-gol-jogador {
+    width: 100%;
+    text-align: right;
 }

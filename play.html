@@ -134,7 +134,22 @@
                 <div class="input-area">
                     <input class="input-app" type="text" name="nome-jogador" id="nome-jogador">
                     <button id="add-jogador">+</button>
-                </div>    
+                </div>   
+                
+                <button onclick="finalizarPartida()" class="btn-app ">
+                    Finalizar partida
+                </button>
+
+                <div class="area-gol-jogador">
+                    <div class="area-gol-jogador-center">
+                        <div class="topo-area-gol-jogador">
+                            X
+                        </div>
+                        <div class="lista-add-gol-jogador">
+                            
+                        </div>
+                    </div>
+                </div>
 
                 <!-- <button onclick="visaoJogo()" class="btn-app ">
                     VISAO DE JOGO
@@ -237,14 +252,51 @@
         }
 
         function controladorPontos() {
+            let time1Storage = JSON.parse(localStorage.getItem("time1"));
+            let time2Storage = JSON.parse(localStorage.getItem("time2"));
             const addGolBtn1 = document.querySelector("#add-gol-1");
             const removeGolBtn1 = document.querySelector("#remove-gol-1");
             const golsSpan1 = document.querySelector(".gols-1");
+            const areaGolJogador = document.querySelector(".area-gol-jogador");
+            const listaJogadores = document.querySelector(".lista-add-gol-jogador");
+            const fecharGols = document.querySelector(".topo-area-gol-jogador");
+            const addGolBtn2 = document.querySelector("#add-gol-2");
+            const removeGolBtn2 = document.querySelector("#remove-gol-2");
+            const golsSpan2 = document.querySelector(".gols-2");
 
             addGolBtn1.addEventListener("click", function() {
                 let gols = parseInt(golsSpan1.innerText);
                 gols++;
                 golsSpan1.innerText = gols;
+
+                areaGolJogador.style.display = 'flex';
+
+                for (let i = 0; i < time1Storage.length; i++) {
+                    const jogador = time1Storage[i];
+                    const jogadorTime1 = document.createElement("div");
+                    jogadorTime1.classList.add("jogador-gol");
+                    jogadorTime1.innerText = jogador.nome;
+                    jogadorTime1.setAttribute("data-id", jogador.id);
+                    listaJogadores.appendChild(jogadorTime1);
+
+                    // Adicionar ouvinte de evento ao elemento recém-criado
+                    jogadorTime1.addEventListener("click", function() {
+                        const jogadorId = jogadorTime1.getAttribute("data-id");
+                        // const time1 = JSON.parse(localStorage.getItem("time1"));
+      
+                        for (let i = 0; i < time1Storage.length; i++) {
+                            if (time1Storage[i].id == jogadorId) {
+                                time1Storage[i].gols++;
+                                break;
+                            }
+                        }
+
+                        areaGolJogador.style.display = 'none';
+                        listaJogadores.innerHTML = "";
+
+                        localStorage.setItem("time1", JSON.stringify(time1Storage));
+                    });
+                }
             });
 
             removeGolBtn1.addEventListener("click", function() {
@@ -253,16 +305,42 @@
                     gols--;
                     golsSpan1.innerText = gols;
                 }
+                console.log(time1);
             });
-
-            const addGolBtn2 = document.querySelector("#add-gol-2");
-            const removeGolBtn2 = document.querySelector("#remove-gol-2");
-            const golsSpan2 = document.querySelector(".gols-2");
 
             addGolBtn2.addEventListener("click", function() {
                 let gols = parseInt(golsSpan2.innerText);
                 gols++;
                 golsSpan2.innerText = gols;
+                
+                areaGolJogador.style.display = 'flex';
+
+                for (let i = 0; i < time2Storage.length; i++) {
+                    const jogador = time2Storage[i];
+                    const jogadorTime2 = document.createElement("div");
+                    jogadorTime2.classList.add("jogador-gol");
+                    jogadorTime2.innerText = jogador.nome;
+                    jogadorTime2.setAttribute("data-id", jogador.id);
+                    listaJogadores.appendChild(jogadorTime2);
+
+                    // Adicionar ouvinte de evento ao elemento recém-criado
+                    jogadorTime2.addEventListener("click", function() {
+                        const jogadorId = jogadorTime2.getAttribute("data-id");
+                        // const time2Storage = JSON.parse(localStorage.getItem("time2"));
+      
+                        for (let i = 0; i < time2Storage.length; i++) {
+                            if (time2Storage[i].id == jogadorId) {
+                                time2Storage[i].gols++;
+                                break;
+                            }
+                        }
+
+                        areaGolJogador.style.display = 'none';
+                        listaJogadores.innerHTML = "";
+
+                        localStorage.setItem("time2", JSON.stringify(time2Storage));
+                    });
+                }
             });
 
             removeGolBtn2.addEventListener("click", function() {
@@ -271,6 +349,11 @@
                     gols--;
                     golsSpan2.innerText = gols;
                 }
+            });
+            
+            fecharGols.addEventListener("click", function() {
+                areaGolJogador.style.display = 'none';
+                listaJogadores.innerHTML = "";
             });
         }
 
@@ -568,6 +651,30 @@
 
             });
 
+        }
+
+        function finalizarPartida() {
+            const time1Storage = JSON.parse(localStorage.getItem("time1"));
+            const time2Storage = JSON.parse(localStorage.getItem("time2"));
+            const proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
+            const jogadores = JSON.parse(localStorage.getItem('jogadores'));
+
+            // Adicionar time1Storage ao array jogadores
+            if (Array.isArray(time1Storage)) {
+                jogadores = jogadores.concat(time1Storage);
+            }
+
+            // Adicionar time2Storage ao array jogadores
+            if (Array.isArray(time2Storage)) {
+                jogadores = jogadores.concat(time2Storage);
+            }
+
+            // Adicionar proxReservas ao array jogadores
+            if (Array.isArray(proxReservas)) {
+                jogadores = jogadores.concat(proxReservas);
+            }
+
+            localStorage.setItem("jogadores", JSON.stringify(jogadores));
         }
 
 
