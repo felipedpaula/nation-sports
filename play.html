@@ -136,7 +136,7 @@
                     <button id="add-jogador">+</button>
                 </div>   
                 
-                <button onclick="finalizarPartida()" class="btn-app ">
+                <button onclick="confirm('Tem certeza que deseja finalizar o jogo?', finalizarPartida())" class="btn-app ">
                     Finalizar partida
                 </button>
 
@@ -657,24 +657,20 @@
             const time1Storage = JSON.parse(localStorage.getItem("time1"));
             const time2Storage = JSON.parse(localStorage.getItem("time2"));
             const proxReservas = JSON.parse(localStorage.getItem("proxReservas"));
-            const jogadores = JSON.parse(localStorage.getItem('jogadores'));
+            const areaGolJogador = document.querySelector(".area-gol-jogador");
+            const listaJogadores = document.querySelector(".lista-add-gol-jogador");
+            const allArrays = time1Storage.concat(time2Storage, proxReservas);
 
-            // Adicionar time1Storage ao array jogadores
-            if (Array.isArray(time1Storage)) {
-                jogadores = jogadores.concat(time1Storage);
+            areaGolJogador.style.display = 'flex';
+            
+            for (let i = 0; i < allArrays.length; i++) {
+                const jogador = allArrays[i];
+                const jogadorGols = document.createElement("div");
+                jogadorGols.classList.add("jogador-gol");
+                jogadorGols.innerText = `${jogador.nome} - Gols: ${jogador.gols}`;
+                jogadorGols.setAttribute("data-id", jogador.id);
+                listaJogadores.appendChild(jogadorGols);
             }
-
-            // Adicionar time2Storage ao array jogadores
-            if (Array.isArray(time2Storage)) {
-                jogadores = jogadores.concat(time2Storage);
-            }
-
-            // Adicionar proxReservas ao array jogadores
-            if (Array.isArray(proxReservas)) {
-                jogadores = jogadores.concat(proxReservas);
-            }
-
-            localStorage.setItem("jogadores", JSON.stringify(jogadores));
         }
 
 
